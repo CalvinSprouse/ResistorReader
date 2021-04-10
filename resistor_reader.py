@@ -112,12 +112,15 @@ try:
 
         # get arg dict
         args = vars(parser.parse_args())
+
+        # print input for clarity
+        print("Resistor Input:", ", ".join(str(band).lower().capitalize() for band in args["bands"]))
+
+        # potentially throw error
         result = get_resistance(*args["bands"])
 
         # output
-        band_string = ", ".join(str(band).lower().capitalize() for band in args["bands"])
-        output = (f"Resistor: {band_string}\n"
-                  f"Resistance (Ohms): {result['resistance']} +-{result['tolerance']}%\n"
+        output = (f"Resistance (Ohms): {result['resistance']} +-{result['tolerance']}%\n"
                   f"Min (Ohms): {result['min']}\nMax (Ohms): {result['max']}\n")
         try:
             output += f"Temperature Coefficient (ppm/K): {result['temp_coeff']}"
