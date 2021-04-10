@@ -116,8 +116,8 @@ if __name__ == "__main__":
     # output
     band_string = ", ".join(str(band).lower().capitalize() for band in args["bands"])
     output = (f"Resistor: {band_string}\n"
-              f"Resistance (Ohms): {result['resistance']}Ω +-{result['tolerance']}%\n"
-              f"Min (Ohms): {result['min']}Ω\nMax (Ohms): {result['max']}Ω\n")
+              f"Resistance (Ohms): {result['resistance']} +-{result['tolerance']}%\n"
+              f"Min (Ohms): {result['min']}\nMax (Ohms): {result['max']}\n")
     try:
         output += f"Temperature Coefficient (ppm/K): {result['temp_coeff']}"
     except KeyError:
