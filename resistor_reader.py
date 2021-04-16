@@ -4,58 +4,47 @@ import argparse
 import math
 
 
+# dicts
+color_num_dict = {
+    "black": 0, "brown": 1, "red": 2, "orange": 3, "yellow": 4, "green": 5,
+    "blue": 6, "violet": 7, "grey": 8, "white": 9}
+
+
+mult_dict = {
+    "gold": 0.1, "silver": 0.01}
+for key, val in color_num_dict:
+    mult_dict[key] = math.pow(10, int(val))
+
+
+tolerance_dict = {
+    "brown": 1, "red": 2, "orange": 3, "yellow": 4, "green": 0.5, "blue": 0.25,
+    "violet": 0.1, "grey": 0.05, "gold": 5, "silver": 10}
+
+
+temp_coeff_dict = {
+    "black": 100, "red": 50, "orange": 15, "yellow": 25, "blue": 10, "violet": 5}
+
+
+# functions
 def get_color_num(color: str):
-    if color.lower() == "black":
-        return 0
-    elif color.lower() == "brown":
-        return 1
-    elif color.lower() == "red":
-        return 2
-    elif color.lower() == "orange":
-        return 3
-    elif color.lower() == "yellow":
-        return 4
-    elif color.lower() == "green":
-        return 5
-    elif color.lower() == "blue":
-        return 6
-    elif color.lower() == "violet":
-        return 7
-    elif color.lower() == "grey":
-        return 8
-    elif color.lower() == "white":
-        return 9
+    try:
+        return color_num_dict[color.lower()]
+    except KeyError:
+        return None
 
 
 def get_mult(color: str):
-    if color.lower() == "gold":
-        return 0.1
-    elif color.lower() == "silver":
-        return 0.01
-    return math.pow(10, int(get_color_num(color)))
+    try:
+        return mult_dict[color.lower()]
+    except KeyError:
+        return None
 
 
 def get_tolerance(color: str):
-    if color.lower() == "brown":
-        return 1
-    elif color.lower() == "red":
-        return 2
-    elif color.lower() == "orange":
-        return 3
-    elif color.lower() == "yellow":
-        return 4
-    elif color.lower() == "green":
-        return 0.5
-    elif color.lower() == "blue":
-        return 0.25
-    elif color.lower() == "violet":
-        return 0.1
-    elif color.lower() == "grey":
-        return 0.05
-    elif color.lower() == "gold":
-        return 5
-    elif color.lower() == "silver":
-        return 10
+    try:
+        return tolerance_dict[color.lower()]
+    except KeyError:
+        return None
 
 
 def get_range(value, tolerance):
@@ -63,18 +52,10 @@ def get_range(value, tolerance):
 
 
 def get_temp_coeff(color: str):
-    if color.lower() == "black":
-        return 100
-    elif color.lower() == "red":
-        return 50
-    elif color.lower() == "orange":
-        return 15
-    elif color.lower() == "yellow":
-        return 25
-    elif color.lower() == "blue":
-        return 10
-    elif color.lower() == "violet":
-        return 5
+    try:
+        return temp_coeff_dict[color.lower()]
+    except KeyError:
+        return None
 
 
 def get_resistance(*bands):
