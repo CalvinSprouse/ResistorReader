@@ -12,7 +12,7 @@ color_num_dict = {
 
 mult_dict = {
     "gold": 0.1, "silver": 0.01}
-for key, val in color_num_dict:
+for key, val in color_num_dict.items():
     mult_dict[key] = math.pow(10, int(val))
 
 
@@ -63,6 +63,9 @@ def get_resistance(*bands):
     band_list = list(bands)
     temp_coeff = None
 
+    # if more than 6 bands will not attempt to solve resistor
+    assert len(band_list) <= 6
+
     # get band color conversion
     if len(band_list) == 6:
         temp_coeff = get_temp_coeff(band_list.pop())
@@ -83,17 +86,34 @@ def get_resistance(*bands):
     return return_dict
 
 
-try:
-    if __name__ == "__main__":
-        # create parser
-        parser = argparse.ArgumentParser(
-            description="Return the resistance and tolerance for a given set of bands")
-        parser.add_argument(
-            "bands", metavar="bands", type=str, nargs="+", help="List of bands in order L-R")
+def get_resistor(resistance: EngNumber):
+    # try 3 bands
+    for band_1_key, band_1_val in color_num_dict.items():
+        for band_2_key, band_2_val in color_num_dict.items():
+            for mullt_key, mult_val in color_num_dict.items():
+                if EngNumber(get_resistance(*[band_1_key, band_2_key, mullt_key, "brown"])) == resistance:
+                    print(f"{band_1_key} {band_2_key} {mullt_key}")
 
-        # get arg dict
-        args = vars(parser.parse_args())
 
+# user input exception
+class IllegalEntryException(Exception):
+    pass
+
+
+if __name__ == "__main__":
+    # create parser
+    parser = argparse.ArgumentParser(
+        description="Return the resistance and tolerance for a given set of bands")
+    parser.add_argument(
+        "bands", metavar="bands", type=str, nargs="+", help="List of bands in order L-R")
+
+    # get arg dict
+    args = vars(parser.parse_args())
+
+    if len(args["bands"]) == 1:
+        value = EngNumber(str(args["bands"][0]))
+        get_resistor(value)
+    else:
         # print input for clarity
         print("Resistor Input:", ", ".join(str(band).lower().capitalize() for band in args["bands"]))
 
@@ -107,6 +127,4 @@ try:
             output += f"Temperature Coefficient (ppm/K): {result['temp_coeff']}"
         except KeyError:
             pass
-        print(output)
-except Exception:
-    print("Illegal Entry - Check Spelling and Order")
+    print(output)
